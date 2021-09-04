@@ -15,12 +15,6 @@ public class Todo: NSManagedObject {
         title ?? "Unknown title"
     }
     var wrappedPriority: Priority {
-        switch priority {
-        case 0: return .low
-        case 1: return .medium
-        case 2: return .high
-        default:
-            fatalError("Invalid priority \(priority)")
-        }
+        Priority(rawValue: priority) ?? .low
     }
 }
