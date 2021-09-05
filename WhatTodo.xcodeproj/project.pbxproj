@@ -74,11 +74,10 @@
 			isa = PBXGroup;
 			children = (
 				21519F8926E34B280075F211 /* WhatTodoApp.swift */,
-				21519F9226E34B2A0075F211 /* Persistence.swift */,
-				21519FB626E371980075F211 /* Todo+CoreDataClass.swift */,
 				210241DA26E38A7C006D9C2F /* Models */,
 				21519F9C26E34EC20075F211 /* Views */,
 				21519FA526E35AE50075F211 /* Resources */,
+				21EBFA7926E4C9BD0074D5A4 /* CoreData */,
 				21519F8F26E34B2A0075F211 /* Preview Content */,
 			);
 			path = WhatTodo;
@@ -118,6 +117,15 @@
 				210241DB26E38EA9006D9C2F /* AddTodoView.swift */,
 			);
 			path = Todo;
+			sourceTree = "<group>";
+		};
+		21EBFA7926E4C9BD0074D5A4 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				21519F9226E34B2A0075F211 /* Persistence.swift */,
+				21519FB626E371980075F211 /* Todo+CoreDataClass.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

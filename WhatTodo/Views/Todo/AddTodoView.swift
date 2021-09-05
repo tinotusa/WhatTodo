@@ -30,6 +30,13 @@ struct AddTodoView: View {
     @State private var reminderDays = Weekdays.monday
     
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.managedObjectContext) var context
+    
+    // NOTE: is having an init bad practice
+    // don't know how to do this otherwise
+    init(title: String = "") {
+        _title = State<String>(wrappedValue: title)
+    }
     
     var body: some View {
         NavigationView {
@@ -81,7 +88,19 @@ struct AddTodoView: View {
     }
     
     private func addTodo() {
-        // todo (heh)
+        let newTodo = Todo(context: context)
+        newTodo.id = UUID()
+        newTodo.title = title
+        newTodo.detail = details
+        newTodo.priority = priority.rawValue
+        newTodo.hasReminder = hasReminder
+        newTodo.reminderDate = reminderDate
+        newTodo.isComplete = false
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context in \(#function): \(error)")
+        }
         presentationMode.wrappedValue.dismiss()
     }
 }

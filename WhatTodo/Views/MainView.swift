@@ -28,7 +28,10 @@ struct MainView: View {
                 }
                 .navigationTitle("Todo")
                 .sheet(isPresented: $showingAddView) {
-                    AddTodoView()
+                    AddTodoView(title: title)
+                        .onDisappear {
+                            title = ""
+                        }
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -40,13 +43,15 @@ struct MainView: View {
                 }
             }
             
-            // MARK: - TODO
-            // add background to the stack or text field
+            // TODO: add background to the stack or text field
             HStack {
                 TextField("Enter something todo.", text: $title)
                 roundAddButton
             }
             .padding()
+            .background(Color(UIColor.systemGray3))
+            .cornerRadius(10)
+            
         }
     }
 }
@@ -54,7 +59,7 @@ struct MainView: View {
 private extension MainView {
     var roundAddButton: some View {
         Button {
-            
+            showingAddView = true
         } label: {
             Image(systemName: "plus")
                 .font(.largeTitle)
@@ -81,6 +86,7 @@ private extension MainView {
     var addButton: some View {
         Button {
             showingAddView = true
+            // TODO: remove this
 //            let todoItem = Todo(context: context)
 //            todoItem.id = UUID()
 //            todoItem.title = "This is a test"
