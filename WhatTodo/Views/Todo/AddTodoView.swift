@@ -8,14 +8,6 @@
 import SwiftUI
 import CoreData
 
-enum Weekdays: String, Codable, Identifiable, CaseIterable {
-    case sunday, monday, tuesday, wednesday, thursday, friday, saturday
-    
-    var id: Weekdays {
-        self
-    }
-}
-
 struct AddTodoView: View {
     @State private var title = ""
     @State private var details = ""
@@ -28,6 +20,7 @@ struct AddTodoView: View {
     }()
     
     @State private var reminderDays = Weekdays.monday
+    @State private var days: Set<Weekdays> = Set(Weekdays.weekdays)
     
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.managedObjectContext) var context
@@ -62,23 +55,52 @@ struct AddTodoView: View {
                 Section(header: Text("Reminder")) {
                     Toggle("Do you want a reminder?", isOn: $hasReminder.animation())
                     if hasReminder {
-                        Picker("Repeat", selection: $reminderDays) {
-                            ForEach(Weekdays.allCases) { weekday in
-                                Text("\(weekday.rawValue.capitalized)")
+                        NavigationLink(destination: DaySelectionView(days: $days)) {
+                            HStack {
+                                Text(days.isEmpty ? "Tap to select days" : "Every")
+                                Spacer()
+                                Text(daysToRemindOn.capitalized)
+                                    .foregroundColor(.orange)
                             }
                         }
                         DatePicker("At", selection: $reminderDate, displayedComponents: [.hourAndMinute])
                     }
                 }
                 addButton
+                    .disabled(!allImportantFieldsFilled)
             }
             .navigationTitle("New todo")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     addButton
+                        .disabled(!allImportantFieldsFilled)
                 }
         }
         }
+    }
+    
+    private var allImportantFieldsFilled: Bool {
+        let title = title
+        if hasReminder && days.isEmpty {
+            return false
+        }
+        return !title.isEmpty
+    }
+    
+    private var daysToRemindOn: String {
+        if days.count == Weekdays.allCases.count {
+            return "Day"
+        }
+        if days.count == 5 && days.allSatisfy({ $0 > Weekdays.sunday && $0 < Weekdays.saturday }) {
+            return "Weekday"
+        }
+        if days.count == 2 && days.allSatisfy({ $0 == Weekdays.sunday || $0 == Weekdays.saturday }) {
+            return "Weekend"
+        }
+        let days = days
+            .sorted()
+            .map { $0.shortForm }
+        return ListFormatter.localizedString(byJoining: days)
     }
     
     private var addButton: some View {

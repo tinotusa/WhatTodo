@@ -22,7 +22,9 @@ struct MainView: View {
             NavigationView {
                 List {
                     ForEach(todoItems) { todoItem in
-                        TodoItemRow(todoItem: todoItem)
+                        NavigationLink(destination: TodoDetailView(todo: todoItem)) {
+                            TodoItemRow(todoItem: todoItem)
+                        }
                     }
                     .onDelete(perform: delete)
                 }

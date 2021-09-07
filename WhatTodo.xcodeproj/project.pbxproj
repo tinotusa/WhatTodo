@@ -18,6 +18,9 @@
 		21519FA026E34FDC0075F211 /* WhatTodo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 21519F9E26E34FDC0075F211 /* WhatTodo.xcdatamodeld */; };
 		21519FB826E371980075F211 /* Todo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21519FB626E371980075F211 /* Todo+CoreDataClass.swift */; };
 		21519FBC26E387F50075F211 /* TodoItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21519FBB26E387F50075F211 /* TodoItemRow.swift */; };
+		21AA8D4426E70C2800488FA7 /* Weekdays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AA8D4326E70C2800488FA7 /* Weekdays.swift */; };
+		21AA8D4626E70C7E00488FA7 /* DaySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AA8D4526E70C7E00488FA7 /* DaySelectionView.swift */; };
+		21EBFA7B26E4CA420074D5A4 /* TodoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EBFA7A26E4CA420074D5A4 /* TodoDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +36,9 @@
 		21519F9F26E34FDC0075F211 /* WhatTodo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WhatTodo.xcdatamodel; sourceTree = "<group>"; };
 		21519FB626E371980075F211 /* Todo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		21519FBB26E387F50075F211 /* TodoItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemRow.swift; sourceTree = "<group>"; };
+		21AA8D4326E70C2800488FA7 /* Weekdays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekdays.swift; sourceTree = "<group>"; };
+		21AA8D4526E70C7E00488FA7 /* DaySelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySelectionView.swift; sourceTree = "<group>"; };
+		21EBFA7A26E4CA420074D5A4 /* TodoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				210241DD26E39065006D9C2F /* Priority.swift */,
+				21AA8D4326E70C2800488FA7 /* Weekdays.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -97,6 +104,7 @@
 				21519F8B26E34B280075F211 /* MainView.swift */,
 				21519FBA26E387EA0075F211 /* Todo */,
 				210241D826E389E7006D9C2F /* CheckBox.swift */,
+				21AA8D4526E70C7E00488FA7 /* DaySelectionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -115,6 +123,7 @@
 			children = (
 				21519FBB26E387F50075F211 /* TodoItemRow.swift */,
 				210241DB26E38EA9006D9C2F /* AddTodoView.swift */,
+				21EBFA7A26E4CA420074D5A4 /* TodoDetailView.swift */,
 			);
 			path = Todo;
 			sourceTree = "<group>";
@@ -198,13 +207,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21AA8D4626E70C7E00488FA7 /* DaySelectionView.swift in Sources */,
 				21519F9326E34B2A0075F211 /* Persistence.swift in Sources */,
 				21519FBC26E387F50075F211 /* TodoItemRow.swift in Sources */,
 				21519F8C26E34B280075F211 /* MainView.swift in Sources */,
 				210241D926E389E7006D9C2F /* CheckBox.swift in Sources */,
 				21519F8A26E34B280075F211 /* WhatTodoApp.swift in Sources */,
+				21EBFA7B26E4CA420074D5A4 /* TodoDetailView.swift in Sources */,
 				21519FA026E34FDC0075F211 /* WhatTodo.xcdatamodeld in Sources */,
 				210241DC26E38EA9006D9C2F /* AddTodoView.swift in Sources */,
+				21AA8D4426E70C2800488FA7 /* Weekdays.swift in Sources */,
 				21519FB826E371980075F211 /* Todo+CoreDataClass.swift in Sources */,
 				210241DE26E39065006D9C2F /* Priority.swift in Sources */,
 			);

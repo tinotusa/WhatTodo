@@ -12,8 +12,13 @@ import CoreData
 @objc(Todo)
 public class Todo: NSManagedObject {
     var wrappedTitle: String {
-        title ?? "Unknown title"
+        title ?? "N/A"
     }
+
+    var wrappedDetail: String {
+        detail ?? "N/A"
+    }
+    
     var wrappedPriority: Priority {
         Priority(rawValue: priority) ?? .low
     }
