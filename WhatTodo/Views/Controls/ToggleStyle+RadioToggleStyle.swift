@@ -13,6 +13,10 @@ struct RadioToggleStyle: ToggleStyle {
             .resizable()
             .frame(width: 30, height: 30)
             .foregroundColor(configuration.isOn ? .green : .gray)
+            .animation(nil)
+            .rotationEffect(.degrees(configuration.isOn ? 360 : 0))
+            .scaleEffect(configuration.isOn ? 1.2 : 1)
+            .animation(.interpolatingSpring(stiffness: 100, damping: 10))
             .onTapGesture {
                 configuration.isOn.toggle()
             }

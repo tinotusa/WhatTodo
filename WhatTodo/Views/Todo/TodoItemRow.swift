@@ -16,22 +16,19 @@ struct TodoItemRow: View {
         HStack {
             Toggle("Complete task", isOn: $todoItem.isComplete)
                 .toggleStyle(.radioToggleStyle)
+            
             Group {
                 VStack(alignment: .leading) {
                     Text(todoItem.wrappedTitle)
                         .lineLimit(2)
                     Spacer()
-                    Text(priority)
-                        .padding(.horizontal, 10)
-                        .frame(width: 85, height: 20)
-                        .background(todoItem.wrappedPriority.colour.opacity(0.5))
-                        .cornerRadius(7)
-                        .foregroundColor(.white)
-                        
+                    
+                    priorityAndAlarmBadge
                 }
                 Spacer()
             }
             .opacity(todoItem.isComplete ? 0.4 : 1)
+            .animation(.easeInOut)
         }
     }
 }
@@ -41,10 +38,21 @@ private extension TodoItemRow {
         todoItem.wrappedPriority.description.capitalized
     }
     
-    var formattedTime: String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: todoItem.reminderDate ?? Date())
+    var priorityAndAlarmBadge: some View {
+        HStack {
+            Text(priority)
+                .padding(.horizontal, 10)
+                .frame(width: 85, height: 20)
+                .background(todoItem.wrappedPriority.colour.opacity(0.5))
+                .cornerRadius(7)
+                .foregroundColor(.white)
+            if todoItem.hasReminder {
+                Image(systemName: "alarm")
+                    .resizable()
+                    .frame(width: 15, height: 15)
+                    .foregroundColor(.black.opacity(0.8))
+            }
+        }
     }
 }
 
@@ -55,15 +63,18 @@ struct TodoItemRow_Previews: PreviewProvider {
         todoItem.id = UUID()
         todoItem.title = "Preview title"
         todoItem.detail = "preview detils"
+        todoItem.hasReminder = true
         todoItem.priority = Priority.medium.rawValue
         return todoItem
     }()
     
     static var previews: some View {
+//        Text("hello")
         TodoItemRow(todoItem: todoItem)
             .environment(
                 \.managedObjectContext,
                  context
             )
+            .previewLayout(.fixed(width: 400, height: 80))
     }
 }

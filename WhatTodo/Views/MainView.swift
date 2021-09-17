@@ -9,30 +9,61 @@ import SwiftUI
 import CoreData
 import UserNotifications
 
+// TODO: - Add dates to add todo view
+
+struct SortedList: View {
+    @Environment(\.managedObjectContext) var context
+    let sortDescriptor: NSSortDescriptor
+    @FetchRequest var todoItems: FetchedResults<Todo>
+    
+    @Binding var selectedTodo: Todo?
+    
+    init(sortDescriptor: NSSortDescriptor, selectedTodo: Binding<Todo?>) {
+        self.sortDescriptor = sortDescriptor
+        _todoItems = FetchRequest(entity: Todo.entity(), sortDescriptors: [sortDescriptor])
+        _selectedTodo = selectedTodo
+    }
+    
+    var body: some View {
+        ForEach(todoItems) { todoItem in
+            TodoItemRow(todoItem: todoItem)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    selectedTodo = todoItem
+                }
+        }
+        .onDelete(perform: delete)
+    }
+    
+    private func delete(offsets: IndexSet) {
+        offsets.map { todoItems[$0] }
+        .forEach { item in
+            context.delete(item)
+        }
+        do {
+            try withAnimation {
+                try context.save()
+            }
+        } catch {
+            print("Failed to delete Todo item: \(error)")
+        }
+    }
+}
+
 struct MainView: View {
     @Environment(\.managedObjectContext) var context
     @FetchRequest(entity: Todo.entity(), sortDescriptors: [], predicate: nil)
     var todoItems: FetchedResults<Todo>
 
     @State private var showingAddView = false
-    @State private var showingDetailView = false
     @State private var title = ""
     @State private var selectedTodo: Todo?
-
+    @State private var sortDescriptor = NSSortDescriptor(keyPath: \Todo.title, ascending: true)
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottom) {
                 List {
-                    ForEach(todoItems) { todoItem in
-                        TodoItemRow(todoItem: todoItem)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                selectedTodo = todoItem
-                                showingDetailView = true
-                            }
-                            
-                    }
-                    .onDelete(perform: delete)
+                    SortedList(sortDescriptor: sortDescriptor, selectedTodo: $selectedTodo)
                 }
                 .navigationTitle("Todo")
                 .sheet(item: $selectedTodo) { selectedTodo in
@@ -59,9 +90,9 @@ struct MainView: View {
                     // TODO: - look up how to change sort descriptors
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Menu {
-                            Button("Name",       action: sortByName)
-                            Button("Priority",   action: sortByPriority)
-                            Button("Date added", action: sortByDate)
+                            ForEach(SortOrder.allCases) { order in
+                                Button(order.rawValue, action: {sort(by: order) })
+                            }
                         } label: {
                             Text("Sort")
                         }
@@ -75,16 +106,11 @@ struct MainView: View {
 }
 
 private extension MainView {
-  
-    func sortByName() {
+    func sort(by sortOrder: SortOrder) {
+        withAnimation {
+            sortDescriptor = sortOrder.sortDescriptor
+        }
     }
-    
-    func sortByPriority() {
-    }
-    
-    func sortByDate() {
-    }
-    
     var inputBar: some View {
         HStack {
             TextField("Enter something todo.", text: $title)
@@ -92,7 +118,7 @@ private extension MainView {
         }
         .padding()
         .background(Color(UIColor.systemGray3))
-        .cornerRadius(10)
+        .cornerRadius(50)
         .padding(.horizontal)
         .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 5)
     }
@@ -107,20 +133,6 @@ private extension MainView {
                 .background(Color.gray)
                 .foregroundColor(.white)
                 .clipShape(Circle())
-        }
-    }
-    
-    func delete(offsets: IndexSet) {
-        offsets.map { todoItems[$0] }
-        .forEach {
-            context.delete($0)
-        }
-        do {
-            try withAnimation {
-                try context.save()
-            }
-        } catch {
-            print("error: \(error)")
         }
     }
     
