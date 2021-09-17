@@ -10,47 +10,37 @@ import CoreData
 
 struct TodoItemRow: View {
     @Environment(\.managedObjectContext) var context
-    
-    let todoItem: Todo
-    @State private var isChecked: Bool = false
-    
-    init(todoItem: Todo) {
-        self.todoItem = todoItem
-        _isChecked = State<Bool>(wrappedValue: todoItem.isComplete)
-    }
+    @ObservedObject var todoItem: Todo
     
     var body: some View {
-        let _isChecked = Binding<Bool>(
-            get: { isChecked },
-            set: {
-                isChecked = $0
-                todoItem.isComplete = isChecked
-                try? context.save()
+        HStack {
+            Toggle("Complete task", isOn: $todoItem.isComplete)
+                .toggleStyle(.radioToggleStyle)
+            Group {
+                VStack(alignment: .leading) {
+                    Text(todoItem.wrappedTitle)
+                    Spacer()
+                    Text(priority)
+                        .padding(.horizontal, 10)
+                        .frame(width: 85, height: 20)
+                        .background(todoItem.wrappedPriority.colour.opacity(0.5))
+                        .cornerRadius(7)
+                        .foregroundColor(.white)
+                        
+                }
+                Spacer()
             }
-        )
-        
-        return HStack {
-            CheckBox(isChecked: _isChecked)
-            VStack(alignment: .leading) {
-                Text(todoItem.wrappedTitle)
-                Text(description)
-                    .padding(.horizontal, 10)
-                    .background(todoItem.wrappedPriority.colour)
-                    .cornerRadius(10)
-            }
-            Spacer()
-            VStack {
-                Text("Every Tue")
-                Text("At \(formattedTime)")
-            }
+            .opacity(todoItem.isComplete ? 0.4 : 1)
         }
     }
-    
-    private var description: String {
+}
+
+private extension TodoItemRow {
+    var priority: String {
         todoItem.wrappedPriority.description.capitalized
     }
     
-    private var formattedTime: String {
+    var formattedTime: String {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         return formatter.string(from: todoItem.reminderDate ?? Date())

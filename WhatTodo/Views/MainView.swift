@@ -10,21 +10,27 @@ import CoreData
 
 struct MainView: View {
     @Environment(\.managedObjectContext) var context
-    
     @FetchRequest(entity: Todo.entity(), sortDescriptors: [], predicate: nil)
     var todoItems: FetchedResults<Todo>
 
     @State private var showingAddView = false
+    @State private var showingDetailView = false
     @State private var title = ""
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            NavigationView {
+        NavigationView {
+            ZStack(alignment: .bottom) {
                 List {
                     ForEach(todoItems) { todoItem in
-                        NavigationLink(destination: TodoDetailView(todo: todoItem)) {
-                            TodoItemRow(todoItem: todoItem)
-                        }
+                        TodoItemRow(todoItem: todoItem)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                showingDetailView = true
+                            }
+                            .sheet(isPresented: $showingDetailView) {
+                                TodoDetailView(todo: todoItem)
+                                    .environment(\.managedObjectContext, context)
+                            }
                     }
                     .onDelete(perform: delete)
                 }
@@ -34,6 +40,7 @@ struct MainView: View {
                         .onDisappear {
                             title = ""
                         }
+                        .environment(\.managedObjectContext, context)
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -43,17 +50,16 @@ struct MainView: View {
                         addButton
                     }
                 }
+                
+                HStack {
+                    TextField("Enter something todo.", text: $title)
+                    roundAddButton
+                }
+                .padding()
+                .background(Color(UIColor.systemGray3))
+                .cornerRadius(10)
+                .padding(.horizontal)
             }
-            
-            // TODO: add background to the stack or text field
-            HStack {
-                TextField("Enter something todo.", text: $title)
-                roundAddButton
-            }
-            .padding()
-            .background(Color(UIColor.systemGray3))
-            .cornerRadius(10)
-            
         }
     }
 }
@@ -71,6 +77,7 @@ private extension MainView {
                 .clipShape(Circle())
         }
     }
+    
     func delete(offsets: IndexSet) {
         offsets.map { todoItems[$0] }
         .forEach {
@@ -88,22 +95,6 @@ private extension MainView {
     var addButton: some View {
         Button {
             showingAddView = true
-            // TODO: remove this
-//            let todoItem = Todo(context: context)
-//            todoItem.id = UUID()
-//            todoItem.title = "This is a test"
-//            todoItem.detail = "some detail here"
-//            todoItem.priority = Priority.high.rawValue
-//            todoItem.isComplete = true
-//            todoItem.reminderDate = Date()
-//            do {
-//                try withAnimation {
-//                    try context.save()
-//                }
-//            } catch {
-//                print(error)
-//            }
-            
         } label: {
             Image(systemName: "plus.circle")
         }

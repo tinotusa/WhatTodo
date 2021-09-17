@@ -10,10 +10,17 @@ import CoreData
 
 struct TodoDetailView: View {
     @Environment(\.managedObjectContext) var context
-    let todo: Todo
-    
+    @ObservedObject var todo: Todo
+
     var body: some View {
         Form {
+            Section(header: Text("Complete")) {
+                HStack {
+                    Toggle(isOn: $todo.isComplete) {
+                        Text("Mark Complete")
+                    }
+                }
+            }
             Section(header: Text("Title")) {
                 Text(todo.wrappedTitle)
             }
@@ -22,13 +29,14 @@ struct TodoDetailView: View {
             }
             Section(header: Text("Reminder")) {
                 Text(reminderText)
-                
             }
         }
         .navigationTitle("Details")
     }
+}
 
-    private var reminderText: String {
+private extension TodoDetailView {
+    var reminderText: String {
         var text = "\(todo.hasReminder ? "Has" : "No") reminder set"
         if todo.hasReminder {
             text += " at \(formattedDate)"
@@ -36,7 +44,7 @@ struct TodoDetailView: View {
         return text
     }
     
-    private var formattedDate: String {
+    var formattedDate: String {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
         return formatter.string(from: todo.reminderDate ?? Date())
@@ -62,10 +70,12 @@ struct TodoDetailView_Previews: PreviewProvider {
     }()
     
     static var previews: some View {
-        TodoDetailView(todo: todoItem)
-            .environment(
-                \.managedObjectContext,
-                 context
-            )
+        NavigationView {
+            TodoDetailView(todo: todoItem)
+                .environment(
+                    \.managedObjectContext,
+                     context
+                )
+        }
     }
 }

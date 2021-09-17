@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		210241D926E389E7006D9C2F /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210241D826E389E7006D9C2F /* CheckBox.swift */; };
 		210241DC26E38EA9006D9C2F /* AddTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210241DB26E38EA9006D9C2F /* AddTodoView.swift */; };
 		210241DE26E39065006D9C2F /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210241DD26E39065006D9C2F /* Priority.swift */; };
+		2126905A26F0BAC10006B10B /* ToggleStyle+RadioToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2126905926F0BAC10006B10B /* ToggleStyle+RadioToggleStyle.swift */; };
 		21519F8A26E34B280075F211 /* WhatTodoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21519F8926E34B280075F211 /* WhatTodoApp.swift */; };
 		21519F8C26E34B280075F211 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21519F8B26E34B280075F211 /* MainView.swift */; };
 		21519F8E26E34B2A0075F211 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21519F8D26E34B2A0075F211 /* Assets.xcassets */; };
@@ -24,9 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		210241D826E389E7006D9C2F /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		210241DB26E38EA9006D9C2F /* AddTodoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoView.swift; sourceTree = "<group>"; };
 		210241DD26E39065006D9C2F /* Priority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Priority.swift; sourceTree = "<group>"; };
+		2126905926F0BAC10006B10B /* ToggleStyle+RadioToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToggleStyle+RadioToggleStyle.swift"; sourceTree = "<group>"; };
 		21519F8626E34B280075F211 /* WhatTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhatTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21519F8926E34B280075F211 /* WhatTodoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatTodoApp.swift; sourceTree = "<group>"; };
 		21519F8B26E34B280075F211 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -59,6 +59,14 @@
 				21AA8D4326E70C2800488FA7 /* Weekdays.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		2126905826F0BAA80006B10B /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				2126905926F0BAC10006B10B /* ToggleStyle+RadioToggleStyle.swift */,
+			);
+			path = Controls;
 			sourceTree = "<group>";
 		};
 		21519F7D26E34B280075F211 = {
@@ -102,8 +110,8 @@
 			isa = PBXGroup;
 			children = (
 				21519F8B26E34B280075F211 /* MainView.swift */,
+				2126905826F0BAA80006B10B /* Controls */,
 				21519FBA26E387EA0075F211 /* Todo */,
-				210241D826E389E7006D9C2F /* CheckBox.swift */,
 				21AA8D4526E70C7E00488FA7 /* DaySelectionView.swift */,
 			);
 			path = Views;
@@ -211,11 +219,11 @@
 				21519F9326E34B2A0075F211 /* Persistence.swift in Sources */,
 				21519FBC26E387F50075F211 /* TodoItemRow.swift in Sources */,
 				21519F8C26E34B280075F211 /* MainView.swift in Sources */,
-				210241D926E389E7006D9C2F /* CheckBox.swift in Sources */,
 				21519F8A26E34B280075F211 /* WhatTodoApp.swift in Sources */,
 				21EBFA7B26E4CA420074D5A4 /* TodoDetailView.swift in Sources */,
 				21519FA026E34FDC0075F211 /* WhatTodo.xcdatamodeld in Sources */,
 				210241DC26E38EA9006D9C2F /* AddTodoView.swift in Sources */,
+				2126905A26F0BAC10006B10B /* ToggleStyle+RadioToggleStyle.swift in Sources */,
 				21AA8D4426E70C2800488FA7 /* Weekdays.swift in Sources */,
 				21519FB826E371980075F211 /* Todo+CoreDataClass.swift in Sources */,
 				210241DE26E39065006D9C2F /* Priority.swift in Sources */,

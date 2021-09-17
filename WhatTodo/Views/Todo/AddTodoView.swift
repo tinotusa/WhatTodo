@@ -36,7 +36,6 @@ struct AddTodoView: View {
             Form {
                 Section(header: Text("Title")) {
                     TextField("What do you want to do?", text: $title)
-                    
                 }
                 
                 Section(header: Text("Details (optional)")) {
@@ -52,20 +51,7 @@ struct AddTodoView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
                 
-                Section(header: Text("Reminder")) {
-                    Toggle("Do you want a reminder?", isOn: $hasReminder.animation())
-                    if hasReminder {
-                        NavigationLink(destination: DaySelectionView(days: $days)) {
-                            HStack {
-                                Text(days.isEmpty ? "Tap to select days" : "Every")
-                                Spacer()
-                                Text(daysToRemindOn.capitalized)
-                                    .foregroundColor(.orange)
-                            }
-                        }
-                        DatePicker("At", selection: $reminderDate, displayedComponents: [.hourAndMinute])
-                    }
-                }
+                reminderSection
                 addButton
                     .disabled(!allImportantFieldsFilled)
             }
@@ -75,11 +61,32 @@ struct AddTodoView: View {
                     addButton
                         .disabled(!allImportantFieldsFilled)
                 }
+            }
         }
+    }
+}
+
+private extension AddTodoView {
+    // MARK: Form sections
+    var reminderSection: some View {
+        Section(header: Text("Reminder")) {
+            Toggle("Do you want a reminder?", isOn: $hasReminder.animation())
+            if hasReminder {
+                NavigationLink(destination: DaySelectionView(days: $days)) {
+                    HStack {
+                        Text(days.isEmpty ? "Tap to select days" : "Every")
+                        Spacer()
+                        Text(daysToRemindOn.capitalized)
+                            .foregroundColor(.orange)
+                    }
+                }
+                DatePicker("At", selection: $reminderDate, displayedComponents: [.hourAndMinute])
+            }
         }
     }
     
-    private var allImportantFieldsFilled: Bool {
+    // MARK: Other
+    var allImportantFieldsFilled: Bool {
         let title = title
         if hasReminder && days.isEmpty {
             return false
@@ -87,7 +94,7 @@ struct AddTodoView: View {
         return !title.isEmpty
     }
     
-    private var daysToRemindOn: String {
+    var daysToRemindOn: String {
         if days.count == Weekdays.allCases.count {
             return "Day"
         }
@@ -103,13 +110,13 @@ struct AddTodoView: View {
         return ListFormatter.localizedString(byJoining: days)
     }
     
-    private var addButton: some View {
+    var addButton: some View {
         Button(action: addTodo) {
             Text("Add")
         }
     }
     
-    private func addTodo() {
+    func addTodo() {
         let newTodo = Todo(context: context)
         newTodo.id = UUID()
         newTodo.title = title
