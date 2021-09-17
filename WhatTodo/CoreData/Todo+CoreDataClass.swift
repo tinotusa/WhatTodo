@@ -12,14 +12,22 @@ import CoreData
 @objc(Todo)
 public class Todo: NSManagedObject {
     var wrappedTitle: String {
-        title ?? "N/A"
+        get { title ?? "N/A" }
+        set { title = newValue }
     }
 
     var wrappedDetail: String {
-        detail ?? "N/A"
+        get { detail ?? "N/A" }
+        set { detail = newValue }
     }
     
     var wrappedPriority: Priority {
-        Priority(rawValue: priority) ?? .low
+        get { Priority(rawValue: priority) ?? .low }
+        set { priority = newValue.rawValue }
+    }
+    
+    var wrappedReminderDate: Date {
+        get { reminderDate ?? Date() }
+        set { reminderDate = newValue }
     }
 }

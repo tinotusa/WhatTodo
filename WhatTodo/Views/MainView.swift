@@ -16,6 +16,7 @@ struct MainView: View {
     @State private var showingAddView = false
     @State private var showingDetailView = false
     @State private var title = ""
+    @State private var selectedTodo: Todo?
     
     var body: some View {
         NavigationView {
@@ -25,16 +26,18 @@ struct MainView: View {
                         TodoItemRow(todoItem: todoItem)
                             .contentShape(Rectangle())
                             .onTapGesture {
+                                selectedTodo = todoItem
                                 showingDetailView = true
                             }
-                            .sheet(isPresented: $showingDetailView) {
-                                TodoDetailView(todo: todoItem)
-                                    .environment(\.managedObjectContext, context)
-                            }
+                            
                     }
                     .onDelete(perform: delete)
                 }
                 .navigationTitle("Todo")
+                .sheet(item: $selectedTodo) { selectedTodo in
+                    TodoDetailView(todo: selectedTodo)
+                        .environment(\.managedObjectContext, context)
+                }
                 .sheet(isPresented: $showingAddView) {
                     AddTodoView(title: title)
                         .onDisappear {

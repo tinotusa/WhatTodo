@@ -10,44 +10,82 @@ import CoreData
 
 struct TodoDetailView: View {
     @Environment(\.managedObjectContext) var context
+    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var todo: Todo
 
     var body: some View {
         Form {
-            Section(header: Text("Complete")) {
-                HStack {
-                    Toggle(isOn: $todo.isComplete) {
-                        Text("Mark Complete")
-                    }
-                }
-            }
-            Section(header: Text("Title")) {
-                Text(todo.wrappedTitle)
-            }
-            Section(header: Text("Details")) {
-                Text(todo.wrappedDetail)
-            }
-            Section(header: Text("Reminder")) {
-                Text(reminderText)
-            }
+            completeTodoSection
+            
+            titleSection
+            
+            detailsSection
+            
+            prioritySection
+            
+            reminderSection
         }
         .navigationTitle("Details")
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Close") {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            }
+        }
     }
 }
 
 private extension TodoDetailView {
-    var reminderText: String {
-        var text = "\(todo.hasReminder ? "Has" : "No") reminder set"
-        if todo.hasReminder {
-            text += " at \(formattedDate)"
+    var completeTodoSection: some View {
+        Toggle(isOn: $todo.isComplete) {
+            Text("Complete")
         }
-        return text
     }
     
-    var formattedDate: String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: todo.reminderDate ?? Date())
+    var titleSection: some View  {
+        Section(header: Text("Title")) {
+            TextField("Todo title", text: $todo.wrappedTitle)
+        }
+    }
+    
+    var detailsSection: some View {
+        Section(header: Text("Details")) {
+            TextEditor(text: $todo.wrappedDetail)
+                .frame(height: 100)
+        }
+    }
+    
+    var prioritySection: some View {
+        Section(header: Text("Priority")) {
+            Picker("Priority", selection: $todo.priority) {
+                ForEach(Priority.allCases) { priority in
+                    Text(priority.description.capitalized)
+                        .tag(priority.rawValue)
+                }
+            }
+            .pickerStyle(SegmentedPickerStyle())
+        }
+    }
+    
+    var reminderSection: some View {
+        Section(header: Text("Reminder")) {
+            Toggle(isOn: $todo.hasReminder.animation()) {
+                Text("Remind me")
+            }
+            if todo.hasReminder {
+                DatePicker(
+                    "Date",
+                    selection: $todo.wrappedReminderDate,
+                    displayedComponents: [.date]
+                )
+                DatePicker(
+                    "Time",
+                    selection: $todo.wrappedReminderDate,
+                    displayedComponents: [.hourAndMinute]
+                )
+            }
+        }
     }
 }
 
