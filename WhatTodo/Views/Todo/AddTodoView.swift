@@ -14,8 +14,7 @@ struct AddTodoView: View {
     @State private var priority = Priority.low
     @State private var hasReminder = false
     @State private var reminderDate = { () -> Date in
-        var components = DateComponents(calendar: .current)
-        components.hour = 18
+        var components = Calendar.current.dateComponents([.weekday, .hour, .minute], from: Date())
         return components.date ?? Date()
     }()
     
@@ -52,6 +51,7 @@ struct AddTodoView: View {
                 }
                 
                 reminderSection
+                
                 addButton
                     .disabled(!allImportantFieldsFilled)
             }
@@ -60,6 +60,11 @@ struct AddTodoView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     addButton
                         .disabled(!allImportantFieldsFilled)
+                }
+            }
+            .onChange(of: hasReminder) { hasReminder in
+                if hasReminder {
+                    NotificationsManager.requestUserNotificationAuthorization()
                 }
             }
         }
@@ -76,11 +81,16 @@ private extension AddTodoView {
                     HStack {
                         Text(days.isEmpty ? "Tap to select days" : "Every")
                         Spacer()
-                        Text(daysToRemindOn.capitalized)
+                        Text(daysToRemindOn(days: days))
                             .foregroundColor(.orange)
                     }
                 }
-                DatePicker("At", selection: $reminderDate, displayedComponents: [.hourAndMinute])
+                DatePicker(
+                    "At",
+                    selection: $reminderDate,
+                    in: Date()...,
+                    displayedComponents: [.hourAndMinute]
+                )
             }
         }
     }
@@ -93,23 +103,7 @@ private extension AddTodoView {
         }
         return !title.isEmpty
     }
-    
-    var daysToRemindOn: String {
-        if days.count == Weekdays.allCases.count {
-            return "Day"
-        }
-        if days.count == 5 && days.allSatisfy({ $0 > Weekdays.sunday && $0 < Weekdays.saturday }) {
-            return "Weekday"
-        }
-        if days.count == 2 && days.allSatisfy({ $0 == Weekdays.sunday || $0 == Weekdays.saturday }) {
-            return "Weekend"
-        }
-        let days = days
-            .sorted()
-            .map { $0.shortForm }
-        return ListFormatter.localizedString(byJoining: days)
-    }
-    
+
     var addButton: some View {
         Button(action: addTodo) {
             Text("Add")
@@ -127,6 +121,7 @@ private extension AddTodoView {
         newTodo.isComplete = false
         do {
             try context.save()
+            NotificationsManager.addNotification(for: newTodo)
         } catch {
             print("Error saving context in \(#function): \(error)")
         }

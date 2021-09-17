@@ -11,25 +11,33 @@ import CoreData
 struct TodoDetailView: View {
     @Environment(\.managedObjectContext) var context
     @Environment(\.presentationMode) var presentationMode
+    
+    let userNotifications = UNUserNotificationCenter.current()
+    
     @ObservedObject var todo: Todo
 
     var body: some View {
-        Form {
-            completeTodoSection
-            
-            titleSection
-            
-            detailsSection
-            
-            prioritySection
-            
-            reminderSection
-        }
-        .navigationTitle("Details")
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button("Close") {
-                    presentationMode.wrappedValue.dismiss()
+        NavigationView {
+            Form {
+                completeTodoSection
+                
+                titleSection
+                
+                detailsSection
+                
+                prioritySection
+                
+                reminderSection
+            }
+            .onAppear {
+                NotificationsManager.requestUserNotificationAuthorization()
+            }
+            .navigationTitle("Details")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }
             }
         }
@@ -74,11 +82,28 @@ private extension TodoDetailView {
                 Text("Remind me")
             }
             if todo.hasReminder {
+                Toggle(isOn: $todo.repeatReminder.animation()) {
+                    Text("Repeat")
+                }
+            }
+            if todo.hasReminder && todo.repeatReminder {
+                NavigationLink(destination: DaySelectionView(days: $todo.wrappedDaysToRepeat)) {
+                    HStack {
+                        Text("Every")
+                        Spacer()
+                        Text("\(daysToRemindOn(days: todo.wrappedDaysToRepeat).capitalized)")
+                    }
+                }
+            }
+            if todo.hasReminder && !todo.repeatReminder {
                 DatePicker(
                     "Date",
                     selection: $todo.wrappedReminderDate,
+                    in: Date()...,
                     displayedComponents: [.date]
                 )
+            }
+            if todo.hasReminder {
                 DatePicker(
                     "Time",
                     selection: $todo.wrappedReminderDate,
@@ -103,6 +128,7 @@ struct TodoDetailView_Previews: PreviewProvider {
         todo.isComplete = false
         todo.hasReminder = true
         todo.reminderDate = Date()
+        todo.repeatReminder = true
         todo.priority = Priority.low.rawValue
         return todo
     }()

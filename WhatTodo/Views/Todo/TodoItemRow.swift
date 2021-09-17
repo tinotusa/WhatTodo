@@ -19,6 +19,7 @@ struct TodoItemRow: View {
             Group {
                 VStack(alignment: .leading) {
                     Text(todoItem.wrappedTitle)
+                        .lineLimit(2)
                     Spacer()
                     Text(priority)
                         .padding(.horizontal, 10)
