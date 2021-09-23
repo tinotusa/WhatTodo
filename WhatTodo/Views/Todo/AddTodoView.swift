@@ -23,9 +23,7 @@ struct AddTodoView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.managedObjectContext) var context
-    
-    // NOTE: is having an init bad practice
-    // don't know how to do this otherwise
+
     init(title: String = "") {
         _title = State<String>(wrappedValue: title)
     }

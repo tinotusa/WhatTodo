@@ -38,6 +38,13 @@ private extension TodoItemRow {
         todoItem.wrappedPriority.description.capitalized
     }
     
+    var formattedReminderDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        return dateFormatter.string(from: todoItem.wrappedReminderDate)
+    }
+    
     var priorityAndAlarmBadge: some View {
         HStack {
             Text(priority)
@@ -47,10 +54,13 @@ private extension TodoItemRow {
                 .cornerRadius(7)
                 .foregroundColor(.white)
             if todoItem.hasReminder {
+                Text(formattedReminderDate)
+                    .foregroundColor(todoItem.wrappedReminderDate < Date() ? .red : .primary)
                 Image(systemName: "alarm")
                     .resizable()
                     .frame(width: 15, height: 15)
                     .foregroundColor(.black.opacity(0.8))
+                
             }
         }
     }
@@ -64,6 +74,7 @@ struct TodoItemRow_Previews: PreviewProvider {
         todoItem.title = "Preview title"
         todoItem.detail = "preview detils"
         todoItem.hasReminder = true
+        todoItem.reminderDate = Date()
         todoItem.priority = Priority.medium.rawValue
         return todoItem
     }()

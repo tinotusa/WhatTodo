@@ -95,14 +95,6 @@ private extension TodoDetailView {
                     }
                 }
             }
-            if todo.hasReminder && !todo.repeatReminder {
-                DatePicker(
-                    "Date",
-                    selection: $todo.wrappedReminderDate,
-                    in: Date()...,
-                    displayedComponents: [.date]
-                )
-            }
             if todo.hasReminder {
                 DatePicker(
                     "Time",
@@ -134,12 +126,10 @@ struct TodoDetailView_Previews: PreviewProvider {
     }()
     
     static var previews: some View {
-        NavigationView {
             TodoDetailView(todo: todoItem)
                 .environment(
                     \.managedObjectContext,
                      context
                 )
-        }
     }
 }

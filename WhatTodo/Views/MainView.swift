@@ -7,48 +7,6 @@
 
 import SwiftUI
 import CoreData
-import UserNotifications
-
-// TODO: - Add dates to add todo view
-
-struct SortedList: View {
-    @Environment(\.managedObjectContext) var context
-    let sortDescriptor: NSSortDescriptor
-    @FetchRequest var todoItems: FetchedResults<Todo>
-    
-    @Binding var selectedTodo: Todo?
-    
-    init(sortDescriptor: NSSortDescriptor, selectedTodo: Binding<Todo?>) {
-        self.sortDescriptor = sortDescriptor
-        _todoItems = FetchRequest(entity: Todo.entity(), sortDescriptors: [sortDescriptor])
-        _selectedTodo = selectedTodo
-    }
-    
-    var body: some View {
-        ForEach(todoItems) { todoItem in
-            TodoItemRow(todoItem: todoItem)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    selectedTodo = todoItem
-                }
-        }
-        .onDelete(perform: delete)
-    }
-    
-    private func delete(offsets: IndexSet) {
-        offsets.map { todoItems[$0] }
-        .forEach { item in
-            context.delete(item)
-        }
-        do {
-            try withAnimation {
-                try context.save()
-            }
-        } catch {
-            print("Failed to delete Todo item: \(error)")
-        }
-    }
-}
 
 struct MainView: View {
     @Environment(\.managedObjectContext) var context
@@ -59,25 +17,18 @@ struct MainView: View {
     @State private var title = ""
     @State private var selectedTodo: Todo?
     @State private var sortDescriptor = NSSortDescriptor(keyPath: \Todo.title, ascending: true)
+    
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottom) {
-                List {
-                    SortedList(sortDescriptor: sortDescriptor, selectedTodo: $selectedTodo)
-                }
+                SortedList(sortDescriptor: sortDescriptor, selectedTodo: $selectedTodo)
                 .navigationTitle("Todo")
                 .sheet(item: $selectedTodo) { selectedTodo in
                     TodoDetailView(todo: selectedTodo)
                         .environment(\.managedObjectContext, context)
-                        .onDisappear {
-                            try? context.save()
-                        }
                 }
                 .sheet(isPresented: $showingAddView) {
-                    AddTodoView(title: title)
-                        .onDisappear {
-                            title = ""
-                        }
+                    AddTodoView()
                         .environment(\.managedObjectContext, context)
                 }
                 .toolbar {
@@ -87,7 +38,6 @@ struct MainView: View {
                     ToolbarItem(placement: .primaryAction) {
                         addButton
                     }
-                    // TODO: - look up how to change sort descriptors
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Menu {
                             ForEach(SortOrder.allCases) { order in

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		210241DC26E38EA9006D9C2F /* AddTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210241DB26E38EA9006D9C2F /* AddTodoView.swift */; };
 		210241DE26E39065006D9C2F /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210241DD26E39065006D9C2F /* Priority.swift */; };
+		21170FEB26F49973007D20B0 /* SortedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21170FEA26F49973007D20B0 /* SortedList.swift */; };
 		2126905A26F0BAC10006B10B /* ToggleStyle+RadioToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2126905926F0BAC10006B10B /* ToggleStyle+RadioToggleStyle.swift */; };
 		2146208C26F4751400BB31E2 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2146208B26F4751400BB31E2 /* NotificationsManager.swift */; };
 		2146208F26F48EBE00BB31E2 /* SortOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2146208E26F48EBE00BB31E2 /* SortOrder.swift */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		210241DB26E38EA9006D9C2F /* AddTodoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoView.swift; sourceTree = "<group>"; };
 		210241DD26E39065006D9C2F /* Priority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Priority.swift; sourceTree = "<group>"; };
+		21170FEA26F49973007D20B0 /* SortedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedList.swift; sourceTree = "<group>"; };
 		2126905926F0BAC10006B10B /* ToggleStyle+RadioToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToggleStyle+RadioToggleStyle.swift"; sourceTree = "<group>"; };
 		2146208B26F4751400BB31E2 /* NotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		2146208E26F48EBE00BB31E2 /* SortOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortOrder.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				21519F8B26E34B280075F211 /* MainView.swift */,
+				21170FEA26F49973007D20B0 /* SortedList.swift */,
 				2126905826F0BAA80006B10B /* Controls */,
 				21519FBA26E387EA0075F211 /* Todo */,
 			);
@@ -239,6 +242,7 @@
 				21519FA026E34FDC0075F211 /* WhatTodo.xcdatamodeld in Sources */,
 				210241DC26E38EA9006D9C2F /* AddTodoView.swift in Sources */,
 				2126905A26F0BAC10006B10B /* ToggleStyle+RadioToggleStyle.swift in Sources */,
+				21170FEB26F49973007D20B0 /* SortedList.swift in Sources */,
 				21AA8D4426E70C2800488FA7 /* Weekdays.swift in Sources */,
 				2146208C26F4751400BB31E2 /* NotificationsManager.swift in Sources */,
 				21519FB826E371980075F211 /* Todo+CoreDataClass.swift in Sources */,
