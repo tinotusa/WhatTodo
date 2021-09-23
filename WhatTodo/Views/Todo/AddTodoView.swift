@@ -59,6 +59,11 @@ struct AddTodoView: View {
                     addButton
                         .disabled(!allImportantFieldsFilled)
                 }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
             }
             .onChange(of: hasReminder) { hasReminder in
                 if hasReminder {
@@ -86,7 +91,6 @@ private extension AddTodoView {
                 DatePicker(
                     "At",
                     selection: $reminderDate,
-                    in: Date()...,
                     displayedComponents: [.hourAndMinute]
                 )
             }

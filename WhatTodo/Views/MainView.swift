@@ -28,8 +28,11 @@ struct MainView: View {
                         .environment(\.managedObjectContext, context)
                 }
                 .sheet(isPresented: $showingAddView) {
-                    AddTodoView()
+                    AddTodoView(title: title)
                         .environment(\.managedObjectContext, context)
+                        .onDisappear {
+                            title = ""
+                        }
                 }
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
@@ -51,6 +54,9 @@ struct MainView: View {
                 
                 inputBar
             }
+            
+            Text("Swipe left to select an item")
+                .font(.headline)
         }
     }
 }

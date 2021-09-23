@@ -38,12 +38,14 @@ struct SortedList: View {
         .forEach { item in
             context.delete(item)
         }
-        do {
-            try withAnimation {
-                try context.save()
+        context.perform {
+            do {
+                try withAnimation {
+                    try context.save()
+                }
+            } catch {
+                print(error)
             }
-        } catch {
-            print("Failed to delete Todo item: \(error)")
         }
     }
 }
