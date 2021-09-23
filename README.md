@@ -3,7 +3,7 @@
 A basic todo app
 
 Features:
-- [ ] add/delete todo items
-- [ ] save items (using CoreData)
-- [ ] attach priorities to items
-- [ ] set reminders
+- [x] add/delete todo items
+- [x] save items (using CoreData)
+- [x] attach priorities to items
+- [x] set reminders (only has same day reminders, no repeating)
